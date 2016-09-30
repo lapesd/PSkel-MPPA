@@ -4,7 +4,7 @@
 #include <iostream>
 #include <math.h>
 #include <omp.h>
-
+#include "hr_time.h"
 #define PSKEL_MPPA
 #define MPPA_SLAVE
 #define DEBUG
@@ -81,7 +81,9 @@ int CalcSize(int level){
 
 int main(int argc,char **argv) {
   #ifdef DEBUG
-    cout << "Slave Begin!" << endl;
+  cout << "Slave Begin!" << endl;
+  hr_timer_t totTimerSlave;
+  hrt_start(&totTimerSlave);
   #endif
   /**************Mask for test porpuses****************/
   int level = 1;
@@ -169,4 +171,8 @@ int main(int argc,char **argv) {
   // outputTmp.auxFree();
 
   // mppa_exit(0);
+  #ifdef DEBUG
+  hrt_stop(&totTimerSlave);
+  cout<<"Slave Time: " << hrt_elapsed_time(&totTimerSlave) << endl;
+  #endif
 }

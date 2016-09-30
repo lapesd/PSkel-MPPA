@@ -13,7 +13,7 @@
 
 #define ARGC_SLAVE 11
 #define DEBUG
-#define TIMER
+// #define TIMER
 
 using namespace std;
 
@@ -43,8 +43,8 @@ int main(int argc, char **argv){
 	int cluster_id;
 	int pid;
 	
-	int nb_clusters = 1;
-	#ifdef TIMER
+	int nb_clusters = 16;
+	#ifdef DEBUG
 	hr_timer_t totTimerMaster;
 	//timer
   	hrt_start(&totTimerMaster);
@@ -71,7 +71,7 @@ int main(int argc, char **argv){
 	for (pid = 0; pid < nb_clusters; pid++) {
     		mppa_waitpid(pid, NULL, 0);
 	}
-	#ifdef TIMER
+	#ifdef DEBUG
   	hrt_stop(&totTimerMaster);
   	cout<<"Master Time: " << hrt_elapsed_time(&totTimerMaster) << endl;
   	#endif
