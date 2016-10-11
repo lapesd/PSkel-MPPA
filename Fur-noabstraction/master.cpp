@@ -68,8 +68,8 @@ int main(int argc, char **argv){
 		cout << "Clusters spawned!" << endl;
 	#endif
 
-	for (pid = 0; pid < nb_clusters; pid++) {
-    		mppa_waitpid(pid, NULL, 0);
+	for (i = 0; i < nb_clusters; i++) {
+    		mppa_waitpid(i, NULL, 0);
 	}
 	#ifdef DEBUG
   	hrt_stop(&totTimerMaster);
