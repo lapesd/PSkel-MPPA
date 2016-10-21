@@ -4,7 +4,8 @@
 #include <iostream>
 #include <math.h>
 #include <omp.h>
-#include "hr_time.h"
+#include "interface_mppa.h"
+
 #define PSKEL_MPPA
 #define MPPA_SLAVE
 #define DEBUG
@@ -14,7 +15,7 @@
 #define BARRIER_SYNC_MASTER "/mppa/sync/128:1"
 #define BARRIER_SYNC_SLAVE "/mppa/sync/[0..15]:2"
 #define INPUT(x, y, w, h)\
-				input[(y+w)*4 + (x+h)]
+				input[(y+w)*128 + (x+h)]
 // #include "../../../include/PSkel.h"
 
 using namespace std;
@@ -134,11 +135,7 @@ int CalcSize(int level){
 
 
 int main(int argc,char **argv) {
-	#ifdef DEBUG
-	cout << "Slave Begin!" << endl;
-	hr_timer_t totTimerSlave;
-	hrt_start(&totTimerSlave);
-	#endif
+
 	/**************Mask for test porpuses****************/
 	int level = 1;
 	int power = 2;
@@ -221,10 +218,7 @@ int main(int argc,char **argv) {
 
 	// outputTmp.mppaFree();
 	// outputTmp.auxFree();
-	#ifdef DEBUG
-	hrt_stop(&totTimerSlave);
-	cout<<"Slave Time: " << hrt_elapsed_time(&totTimerSlave) << endl;
-	#endif
+
 	// mppa_exit(0);
 	return 0;
 }

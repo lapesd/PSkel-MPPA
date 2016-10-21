@@ -221,15 +221,18 @@ void mppa_close_barrier (barrier_t *barrier) {
 
 static uint64_t residual_error = 0;
 
-void mppa_init_time(void) {
+void mppa_master_init_time(void) {
   uint64_t t1, t2;
-  t1 = mppa_get_time();
-  t2 = mppa_get_time();
+  t1 = get_time_of_day();
+  t2 = get_time_of_day();
   residual_error = t2 - t1;
 }
 
-inline uint64_t mppa_get_time(void) {
-  return __k1_io_read64((void *)0x70084040) / MPPA_FREQUENCY;
+void mppa_slave_init_time(void) {
+  uint64_t t1, t2;
+  t1 = clock_gettime();
+  t2 = clock_gettime();
+  residual_error = t2 - t1;
 }
 
 inline uint64_t mppa_diff_time(uint64_t t1, uint64_t t2) {

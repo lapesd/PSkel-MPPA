@@ -1,38 +1,46 @@
+/*
+ * Copyright(C) 2014 Pedro H. Penna <pedrohenriquepenna@gmail.com>
+ * 
+ * timer.c - Timer library implementation.
+ */
 
-void hrt_start(hr_timer_t *hr_timer)
+#include <stdint.h>
+#include "hr_time.h"
+
+
+/*
+ * Timer residual error.
+ */
+uint64_t timer_error = 0;
+
+/*
+ * Gets the current timer value.
+ */
+uint64_t timer_get(void)
 {
-#ifdef __WIN32
-    QueryPerformanceCounter(&hr_timer->start_tm) ;
-#else
-    clock_gettime(CLOCK_REALTIME, &hr_timer->start_tm);
-#endif
+    // return ___k1_read_dsu_timestamp();
 }
 
-void hrt_stop(hr_timer_t *hr_timer)
+/*
+ * Computers the difference between two timers.
+ */
+uint64_t timer_diff(uint64_t t1, uint64_t t2)
 {
-#ifdef __WIN32
-    QueryPerformanceCounter(&hr_timer->end_tm) ;
-#else
-    clock_gettime(CLOCK_REALTIME, &hr_timer->end_tm);
-#endif
+    return (t2 - t1 - timer_error);
 }
 
-#ifdef __WIN32
-double LIToSecs(LARGE_INTEGER * L)
+/*
+ * Initializes the timer.
+ */
+void timer_init(void)
 {
-    LARGE_INTEGER frequency;
-    QueryPerformanceFrequency( &frequency );
-    return ((double)L->QuadPart /(double)frequency.QuadPart);
-}
-#endif
+  uint64_t start, end;
+  
+  // __k1_init_dsu_trace_full(0,0,4,0,0);
 
-double hrt_elapsed_time(hr_timer_t *hr_timer)
-{
-#ifdef __WIN32
-    LARGE_INTEGER time;
-    time.QuadPart = hr_timer->end_tm.QuadPart - hr_timer->start_tm.QuadPart;
-    return LIToSecs( &time) ;
-#else
-    return  ((double)(hr_timer->end_tm.tv_sec - hr_timer->start_tm.tv_sec))+((double)(hr_timer->end_tm.tv_nsec - hr_timer->start_tm.tv_nsec)/1000000000L);
-#endif
+  start = timer_get();
+  end = timer_get();
+  
+  timer_error = (end - start);
 }
+

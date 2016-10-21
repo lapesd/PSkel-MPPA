@@ -11,12 +11,12 @@ slave-lflags := -fopenmp -lgomp -lm -I../../lib/
 
 #master
 io-bin := master
-master-srcs := master.cpp interface_mppa.cpp
+master-srcs := master.cpp interface_mppa.cpp hr_time.cpp
 
 
 #slave
 cluster-bin := slave
-slave-srcs := slave.cpp interface_mppa.cpp
+slave-srcs := slave.cpp interface_mppa.cpp hr_time.cpp
 
 # the first binary will be the one booted on the IO!
 mppa-bin := multibin

@@ -1,43 +1,34 @@
 /*
-  * time/time.h
-  *
-  *  Global definitions for some useful functions related to time.
-  *
-  * version:   1.0.0
-  * date:      15 September 2011
-  * author:    (rcor) Rodrigo Caetano de Oliveira Rocha
-  *
-*/
-#ifndef __HR_TIME
-#define __HR_TIME
+ * Copyright(C) 2014 Pedro H. Penna <pedrohenriquepenna@gmail.com>
+ * 
+ * <timer.h> - Timer library.
+ */
 
-#ifdef __cplusplus
-extern "C" {
-#endif
+#ifndef TIMER_H_
+#define TIMER_H_
+  
+  #include <stdint.h>
+  #include <mppaipc.h>
 
-#ifdef __WIN32
-#include <windows.h>
-#define __HR_TIMER_BASE_TYPE    LARGE_INTEGER
-#else
-#include <time.h>
-#include <sys/time.h>
-#define __HR_TIMER_BASE_TYPE    struct timespec
-#endif
+  /* Timing units. */
+  #define MICROSEC 0.000001 /* Micro seconds. */
+  
+  #define MPPA_FREQUENCY 400
 
-typedef struct __hr_timer{
-   __HR_TIMER_BASE_TYPE start_tm;
-   __HR_TIMER_BASE_TYPE end_tm;
-} hr_timer_t;
+  // extern uint64_t ___k1_read_dsu_timestamp();
+  /*
+   * Computers the difference between two times
+   */
+  extern uint64_t timer_diff(uint64_t t1, uint64_t t2);
+  
+  /*
+   * Gets the current timer value
+   */
+  extern uint64_t timer_get(void);  
+  
+  /*
+   * Initializes the timer.
+   */
+  extern void timer_init(void);
 
-void hrt_start(hr_timer_t *hr_timer);
-void hrt_stop(hr_timer_t *hr_timer);
-double hrt_elapsed_time(hr_timer_t *hr_timer);
-
-
-#ifdef __cplusplus
-}
-#endif
-
-#endif
-
-#include "hr_time.cpp"
+#endif /* TIMER_H_ */

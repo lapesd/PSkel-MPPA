@@ -9,7 +9,7 @@
 #include <fstream>
 #include <string>
 #include <math.h>
-#include "hr_time.h"
+#include "interface_mppa.h"
 
 #define ARGC_SLAVE 11
 #define DEBUG
@@ -44,11 +44,7 @@ int main(int argc, char **argv){
 	int pid;
 	
 	int nb_clusters = 16;
-	#ifdef DEBUG
-	hr_timer_t totTimerMaster;
-	//timer
-  	hrt_start(&totTimerMaster);
-  	#endif
+	double start=mppa_master_get_time();
 	char **argv_slave = (char**) malloc(sizeof (char*) * ARGC_SLAVE);
 	for (i = 0; i < ARGC_SLAVE - 1; i++)
 	  argv_slave[i] = (char*) malloc (sizeof (char) * 11);
@@ -71,10 +67,8 @@ int main(int argc, char **argv){
 	for (i = 0; i < nb_clusters; i++) {
     		mppa_waitpid(i, NULL, 0);
 	}
-	#ifdef DEBUG
-  	hrt_stop(&totTimerMaster);
-  	cout<<"Master Time: " << hrt_elapsed_time(&totTimerMaster) << endl;
-  	#endif
+	double end=mppa_master_get_time();
+  	cout<<"Master Time: " << mppa_diff_time(start,end) << endl;
 
 
 
