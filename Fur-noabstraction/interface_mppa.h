@@ -98,8 +98,8 @@ barrier_t *mppa_create_slave_barrier (char *path_master, char *path_slave);
 void mppa_barrier_wait (barrier_t *barrier);
 void mppa_close_barrier (barrier_t *barrier);
 
-double mppa_master_get_time(void);
+struct timeval mppa_master_get_time(void);
 void mppa_slave_get_time(void);
-double mppa_diff_time(uint64_t begin, uint64_t end);
+double mppa_diff_time(struct timeval begin, struct timeval end);
 
 #endif // __INTERFACE_MPPA_H

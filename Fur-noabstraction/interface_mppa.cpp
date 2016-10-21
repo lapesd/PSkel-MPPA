@@ -219,13 +219,13 @@ void mppa_close_barrier (barrier_t *barrier) {
  * TIME
  **************************************/
 
-static uint64_t residual_error = 0;
+//static uint64_t residual_error = 0;
 
-double mppa_master_get_time(void) {
+struct timeval mppa_master_get_time(void) {
   struct timeval tv;
   gettimeofday(&tv, NULL);
-  std::cout << tv.tv_sec << "|" << tv.tv_usec << "|" << tv.tv_sec+((double)(tv.tv_usec/1000000)) << std::endl;
-  return tv.tv_sec+((double)(tv.tv_usec/1000000));
+  //std::cout << tv.tv_sec << "|" << tv.tv_usec << "|" << tv.tv_sec+((double)(tv.tv_usec/1000000)) << std::endl;
+  return tv; //tv.tv_sec+((double)(tv.tv_usec/1000000));
   // return tv;
   // get_time_of_day();
   // residual_error = t2 - t1;
@@ -239,8 +239,6 @@ void mppa_slave_get_time(void) {
   // residual_error = t2 - t1;
 }
 
-double mppa_diff_time(uint64_t begin, uint64_t end) {
-  // double elapsed = (end.tv_sec - begin.tv_sec) + 
-  //                   ((end.tv_usec - begin.tv_usec)/1000000.0);
-  return end-begin;
+double mppa_diff_time(struct timeval begin, struct timeval end) {
+  return (end.tv_sec - begin.tv_sec) + ((end.tv_usec - begin.tv_usec)/1000000.0);
 }
