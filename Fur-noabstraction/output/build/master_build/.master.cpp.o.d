@@ -108,7 +108,11 @@ output/build/master_build/master.cpp.o: master.cpp \
  /usr/local/k1tools/k1-rtems/include/c++/4.9.3/k1-rtems/k1bio/le/bare/bits/basic_file.h \
  /usr/local/k1tools/k1-rtems/include/c++/4.9.3/k1-rtems/k1bio/le/bare/bits/c++io.h \
  /usr/local/k1tools/k1-rtems/include/c++/4.9.3/bits/fstream.tcc \
- /usr/local/k1tools/k1-rtems/include/math.h hr_time.h \
+ /usr/local/k1tools/k1-rtems/include/math.h interface_mppa.h \
+ /usr/local/k1tools/k1-rtems/include/inttypes.h \
+ /usr/local/k1tools/lib/gcc/k1-rtems/4.9.3/include/stdint.h \
+ /usr/local/k1tools/k1-rtems/include/stdint.h \
+ /usr/local/k1tools/k1-rtems/include/sys/time.h \
  /usr/local/k1tools/k1-rtems/include/time.h \
  /usr/local/k1tools/k1-rtems/include/machine/time.h \
  /usr/local/k1tools/k1-rtems/include/HAL/hal/hal.h \
@@ -372,5 +376,4 @@ output/build/master_build/master.cpp.o: master.cpp \
  /usr/local/k1tools/k1-rtems/include/HAL/hal/core/tlb.h \
  /usr/local/k1tools/k1-rtems/include/HAL/machine/mppa_v12/core/k1bio/tlb.h \
  /usr/local/k1tools/k1-rtems/include/HAL/machine/common/core/tlb.h \
- /usr/local/k1tools/k1-rtems/include/HAL/hal/core/trap.h \
- /usr/local/k1tools/k1-rtems/include/sys/time.h hr_time.cpp
+ /usr/local/k1tools/k1-rtems/include/HAL/hal/core/trap.h
