@@ -5,6 +5,7 @@
 #include <math.h>
 #include <omp.h>
 #include "interface_mppa.h"
+#include "include/PSkel.h"
 
 #define PSKEL_MPPA
 #define MPPA_SLAVE
@@ -16,11 +17,11 @@
 
 #define HEIGHT 256
 #define WIDTH 256
-#define ITERATIONS 1000
-
-#define INPUT(x, y, w, h) input[(y+w)*WIDTH + (x+h)]
+//#define ITERATIONS 1000
 
 using namespace std;
+using namespace PSkel;
+
 
 struct Arguments
 {
@@ -29,47 +30,30 @@ struct Arguments
 	float power;
 };
 
-void stencilKernel(int* input,int* output,int* mask, int size_mask, Arguments arg, size_t h, size_t w){
-	int numberA = 0;
-	int numberI = 0;
-
-	numberA += INPUT(-1, -1, w, h);
-	numberA += INPUT(-1, 0, w, h);
-	numberA += INPUT(-1, 1, w, h);
-	numberA += INPUT(0, -1, w, h);
-	numberA += INPUT(0, 1, w, h);
-	numberA += INPUT(1, -1, w, h);
-	numberA += INPUT(1, 0, w, h);
-	numberA += INPUT(1, 1, w, h);
-
-	numberI += INPUT(-2, -2, w, h);
-	numberI += INPUT(-2, -1, w, h);
-	numberI += INPUT(-2, 0, w, h);
-	numberI += INPUT(-2, 1, w, h);
-	numberI += INPUT(-2, 2, w, h);
-	numberI += INPUT(-1, -2, w, h);
-	numberI += INPUT(-1, 2, w, h);
-	numberI += INPUT(0, 2, w, h);
-	numberI += INPUT(0, 2, w, h);
-	numberI += INPUT(1, 2, w, h);
-	numberI += INPUT(1, 2, w, h);
-	numberI += INPUT(2, -2, w, h);
-	numberI += INPUT(2, -1, w, h);
-	numberI += INPUT(2, 0, w, h);
-	numberI += INPUT(2, 1, w, h);
-	numberI += INPUT(2, 2, w, h);
-
-	
-	float totalPowerI = numberI*(arg.power);// The power of Inhibitors
-	if(numberA - totalPowerI < 0) {
-		output[h+w] = 0; //without color and inhibitor
-	} else if(numberA - totalPowerI > 0) {
-		output[h+w] = 1;//with color and active
-	} else {
-		output[h+w] = input[h+w];//doesn't change
-		}
+namespace PSkel{
+__parallel__ void stencilKernel(Array2D<int> input,Array2D<int> output,Mask2D<int> mask, Arguments arg, size_t h, size_t w){
+    int numberA = 0;
+    int numberI = 0;
+    for (int z = 0; z < mask.size; z++) {
+    	if(z < arg.internCircle) {
+			numberA += mask.get(z, input, h, w);
+		} else {
+        	numberI += mask.get(z, input, h, w);
+        	//printf("I: %d\n", numberI);
+      	}
+    }
+    //printf("A: %d\n", numberA);
+    float totalPowerI = numberI*(arg.power);// The power of Inhibitors
+    //printf("Power of I: %f\n", totalPowerI);
+    if(numberA - totalPowerI < 0) {
+		output(h,w) = 0; //without color and inhibitor
+    } else if(numberA - totalPowerI > 0) {
+		output(h,w) = 1;//with color and active
+    } else {
+		output(h,w) = input(h,w);//doesn't change
+    }
+  }
 }
-
 
 int CalcSize(int level){
 	if (level == 1) {
@@ -85,14 +69,33 @@ int CalcSize(int level){
 int main(int argc,char **argv) {
 
 	/**************Mask for test porpuses****************/
+	 /**************Mask for test porpuses****************/
 	int level = 1;
 	int power = 2;
 	int internCircle = pow(CalcSize(level), 2) - 1;
 	int externCircle = pow(CalcSize(2*level), 2) - 1 - internCircle;
 	int size = internCircle + externCircle;
-	//Mask2D<int> mask(size);
-	int mask[size];
+	Mask2D<int> mask(size);
+	int count = 0;
+	for (int x = (level-2*level); x <= level; x++) {
+		for (int y = (level-2*level); y <= level; y++) {
+	  		if (x != 0 || y != 0) {
+	      		mask.set(count, x, y);
+	      		count++;
+	  		}
+		}
+	}
 
+	for (int x = (2*level-4*level); x <= 2*level; x++) {
+		for (int y = (2*level-4*level); y <= 2*level; y++) {
+	  		if (x != 0 || y != 0) {
+	    		if (!(x <= level && x >= -1*level && y <= level && y >= -1*level)) {
+	      			mask.set(count, x, y);
+	      			count++;
+	    		}
+	  		}
+		}
+	}
 	/*************************************************/
 
 	/*********************Arg************************/
@@ -101,28 +104,20 @@ int main(int argc,char **argv) {
 	arg.internCircle = internCircle;
 	arg.externCircle = externCircle;
 	/***********************************************/
-	
-	int* tmp = (int*) malloc((HEIGHT*WIDTH)*sizeof(int));
-	assert(tmp != NULL);
 
-	int* inputTmp = (int*) calloc(HEIGHT*WIDTH, sizeof(int));
-	assert(inputTmp != NULL);
+	Array2D<int> input(WIDTH, HEIGHT);
+	Array2D<int> output(WIDTH, HEIGHT);
 
-	int* outputTmp = (int*) calloc(HEIGHT*WIDTH, sizeof(int));
-	assert(outputTmp != NULL);
-
-	#ifdef DEBUG
-		cout << "Arrays allocated" << endl;
-	#endif
 
 	omp_set_num_threads(16);
 	
 	for (unsigned long int it = 0; it < ITERATIONS; it++) {
-	#pragma omp parallel for
-	for (int h = 0; h < HEIGHT; h++){
-	  for (int w = 0; w < WIDTH; w++){
-	    stencilKernel(inputTmp,outputTmp, mask, size, arg, h, w);
-	    }}
+		#pragma omp parallel for
+		for (int h = 0; h < HEIGHT; h++){
+		  	for (int w = 0; w < WIDTH; w++){
+	    		stencilKernel(inputTmp,outputTmp, mask, arg, h, w);
+			}
+		}
 	}
 	return 0;
 }
