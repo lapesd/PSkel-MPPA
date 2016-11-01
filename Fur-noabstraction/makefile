@@ -6,7 +6,7 @@ platforms := hardware
 cppflags := -Wall #-Wstack-usage=4096
 k1-lflags := -lmppaipc
 # slave flags
-slave-cppflags := -fopenmp
+slave-cppflags := -fopenmp $(CFLAGS)
 slave-lflags := -fopenmp
 
 #master

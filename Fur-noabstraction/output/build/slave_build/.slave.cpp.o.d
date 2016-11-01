@@ -138,4 +138,13 @@ output/build/slave_build/slave.cpp.o: slave.cpp \
  /usr/local/k1tools/k1-nodeos/include/c++/4.9.3/istream \
  /usr/local/k1tools/k1-nodeos/include/c++/4.9.3/bits/istream.tcc \
  /usr/local/k1tools/k1-nodeos/include/math.h \
- /usr/local/k1tools/lib/gcc/k1-nodeos/4.9.3/include/omp.h
+ /usr/local/k1tools/lib/gcc/k1-nodeos/4.9.3/include/omp.h \
+ interface_mppa.h /usr/local/k1tools/k1-nodeos/include/mppaipc.h \
+ /usr/local/k1tools/lib/gcc/k1-nodeos/4.9.3/include/stdbool.h \
+ /usr/local/k1tools/k1-nodeos/include/strings.h \
+ /usr/local/k1tools/k1-nodeos/include/inttypes.h \
+ /usr/local/k1tools/k1-nodeos/include/stdint.h \
+ /usr/local/k1tools/k1-nodeos/include/string.h \
+ /usr/local/k1tools/k1-nodeos/include/sys/string.h \
+ /usr/local/k1tools/k1-nodeos/include/assert.h \
+ /usr/local/k1tools/k1-nodeos/include/sys/time.h

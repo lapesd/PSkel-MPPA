@@ -14,9 +14,9 @@
 #define BARRIER_SYNC_SLAVE "/mppa/sync/[0..15]:2"
 
 
-#define HEIGHT 256
-#define WIDTH 256
-#define ITERATIONS 1000
+#define HEIGHT 128
+#define WIDTH 128
+//#define ITERATIONS 1000
 
 #define INPUT(x, y, w, h) input[(y+w)*WIDTH + (x+h)]
 
@@ -118,10 +118,10 @@ int main(int argc,char **argv) {
 	omp_set_num_threads(16);
 	
 	for (unsigned long int it = 0; it < ITERATIONS; it++) {
-	#pragma omp parallel for
-	for (int h = 0; h < HEIGHT; h++){
-	  for (int w = 0; w < WIDTH; w++){
-	    stencilKernel(inputTmp,outputTmp, mask, size, arg, h, w);
+		#pragma omp parallel for
+		for (int h = 0; h < HEIGHT; h++){
+		  for (int w = 0; w < WIDTH; w++){
+		    stencilKernel(inputTmp,outputTmp, mask, size, arg, h, w);
 	    }}
 	}
 	return 0;
