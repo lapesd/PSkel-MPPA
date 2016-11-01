@@ -38,10 +38,22 @@
 
 #include <stdio.h>
 
+<<<<<<< HEAD
 #ifdef PSKEL_CUDA
  #include <cuda.h>
  #include <cuda_runtime_api.h>
  #define __parallel__ __device__ __host__ __attribute__((always_inline)) __forceinline__
+=======
+#define MIN(a, b) ((a)<=(b) ? (a) : (b))
+
+#ifdef PSKEL_CUDA
+ #define BLOCK_SIZE 32
+ #define IN_RANGE(x, min, max)   ((x)>=(min) && (x)<=(max))
+ #include <cuda.h>
+ #include <cuda_runtime_api.h>
+ #define __forceinline __device__ __host__ __attribute__((always_inline)) __forceinline__
+ #define __parallel__  __forceinline
+>>>>>>> b9433c934dac6775f4c9992cd06902cb2dcb8e76
  #define gpuErrchk(ans) { gpuAssert(((cudaError_t)ans), __FILE__, __LINE__,true); }
  inline void gpuAssert(cudaError_t code, const char *file, int line, bool abort=false){
 	if(code!=cudaSuccess){
@@ -52,9 +64,22 @@
 #else
  #define __device__
  #define __host__
+<<<<<<< HEAD
  #define __parallel__ inline
 
  #define __forceinline__ inline
 #endif
 
+=======
+ #define __forceinline __attribute__((always_inline)) inline
+ #define __forceinline__ __forceinline
+ #define __parallel__ __forceinline
+#endif
+
+#endif
+
+#ifdef DEBUG
+	//#include "hr_time.h"
+//	namespace PSkel{hr_timer_t PSkelTimer;}	
+>>>>>>> b9433c934dac6775f4c9992cd06902cb2dcb8e76
 #endif

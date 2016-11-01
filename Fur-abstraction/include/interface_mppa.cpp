@@ -1,6 +1,10 @@
 //-------------------------------------------------------------------------------
 // Copyright (c) 2015, Márcio B. Castro <marcio.castro@ufsc.br>
+<<<<<<< HEAD
 //             
+=======
+//					   
+>>>>>>> b9433c934dac6775f4c9992cd06902cb2dcb8e76
 // All rights reserved.
 // 
 // Redistribution and use in source and binary forms, with or without
@@ -62,7 +66,11 @@ portal_t *mppa_create_read_portal (char *path, void* buffer, unsigned long buffe
   return ret;
 }
 
+<<<<<<< HEAD
 portal_t *mppa_create_write_portal (char *path, void* buffer, unsigned long buffer_size, int receiver_rank) {   
+=======
+portal_t *mppa_create_write_portal (char *path, void* buffer, unsigned long buffer_size, int receiver_rank) {		
+>>>>>>> b9433c934dac6775f4c9992cd06902cb2dcb8e76
   portal_t *ret = (portal_t*) malloc (sizeof(portal_t));
   ret->file_descriptor = mppa_open(path, O_WRONLY);
   assert(ret->file_descriptor != -1);
@@ -185,11 +193,20 @@ void mppa_barrier_wait(barrier_t *barrier) {
     // when match = 11111...1111 the following mppa_read() returns
     status = mppa_read(barrier->sync_fd_master, &match, sizeof(match));
     assert(status == sizeof(match));
+<<<<<<< HEAD
     
+=======
+    //printf("R\n");
+>>>>>>> b9433c934dac6775f4c9992cd06902cb2dcb8e76
     // the IO sends a message (dummy) containing 1111...1111 to all slaves involved in the barrier
     // this will unblock their mppa_read()
     status = mppa_write(barrier->sync_fd_slave, &dummy, sizeof(long long));
     assert(status == sizeof(long long));
+<<<<<<< HEAD
+=======
+    //printf("W\n");
+    //printf("BarrierMasterSts\n");
+>>>>>>> b9433c934dac6775f4c9992cd06902cb2dcb8e76
   }
   else {
     dummy = 0;
@@ -200,12 +217,25 @@ void mppa_barrier_wait(barrier_t *barrier) {
     mask |= 1 << __k1_get_cluster_id();
     
     // the cluster sends the mask to the IO
+<<<<<<< HEAD
     status = mppa_write(barrier->sync_fd_master, &mask, sizeof(mask));
     assert(status == sizeof(mask));
     
     // the cluster waits for a message containing 1111...111 from the IO to unblock
     status = mppa_read(barrier->sync_fd_slave, &dummy, sizeof(long long));
     assert(status == sizeof(long long));
+=======
+    //printf("%d\n", __k1_get_cluster_id());
+    status = mppa_write(barrier->sync_fd_master, &mask, sizeof(mask));
+    assert(status == sizeof(mask));
+    //printf("R\n");
+    // the cluster waits for a message containing 1111...111 from the IO to unblock
+    status = mppa_read(barrier->sync_fd_slave, &dummy, sizeof(long long));
+    assert(status == sizeof(long long));
+    //printf("Barr\n");
+    //usleep(1000001);
+    //printf("aaaaaaaaaaaaa\n");
+>>>>>>> b9433c934dac6775f4c9992cd06902cb2dcb8e76
   }
 }
 
@@ -219,6 +249,7 @@ void mppa_close_barrier (barrier_t *barrier) {
  * TIME
  **************************************/
 
+<<<<<<< HEAD
 //static uint64_t residual_error = 0;
 
 struct timeval mppa_master_get_time(void) {
@@ -241,4 +272,21 @@ void mppa_slave_get_time(void) {
 
 double mppa_diff_time(struct timeval begin, struct timeval end) {
   return (end.tv_sec - begin.tv_sec) + ((end.tv_usec - begin.tv_usec)/1000000.0);
+=======
+static uint64_t residual_error = 0;
+
+void mppa_init_time(void) {
+  uint64_t t1, t2;
+  t1 = mppa_get_time();
+  t2 = mppa_get_time();
+  residual_error = t2 - t1;
+}
+
+inline uint64_t mppa_get_time(void) {
+  return __k1_io_read64((void *)0x70084040) / MPPA_FREQUENCY;
+}
+
+inline uint64_t mppa_diff_time(uint64_t t1, uint64_t t2) {
+  return t2 - t1 - residual_error;
+>>>>>>> b9433c934dac6775f4c9992cd06902cb2dcb8e76
 }

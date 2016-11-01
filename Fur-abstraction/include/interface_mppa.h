@@ -39,9 +39,12 @@
 #include <stdlib.h>
 #include <string.h>
 #include <assert.h>
+<<<<<<< HEAD
 #include <sys/time.h>
 #include <time.h>
 #include <iostream>
+=======
+>>>>>>> b9433c934dac6775f4c9992cd06902cb2dcb8e76
 
 /*
  * GLOBAL CONSTANTS
@@ -98,8 +101,14 @@ barrier_t *mppa_create_slave_barrier (char *path_master, char *path_slave);
 void mppa_barrier_wait (barrier_t *barrier);
 void mppa_close_barrier (barrier_t *barrier);
 
+<<<<<<< HEAD
 struct timeval mppa_master_get_time(void);
 void mppa_slave_get_time(void);
 double mppa_diff_time(struct timeval begin, struct timeval end);
+=======
+void mppa_init_time(void);
+inline uint64_t mppa_get_time(void);
+inline uint64_t mppa_diff_time(uint64_t t1, uint64_t t2);
+>>>>>>> b9433c934dac6775f4c9992cd06902cb2dcb8e76
 
 #endif // __INTERFACE_MPPA_H

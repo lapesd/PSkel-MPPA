@@ -50,6 +50,62 @@
 
 namespace PSkel{
 
+<<<<<<< HEAD
+=======
+/*
+template<typename T>
+struct SharedMemory
+{
+    size_t width;
+    size_t range;
+    // Should never be instantiated.
+    // We enforce this at compile time.
+    __device__ T* GetPointer( void )
+    {
+        extern __device__ void error( void );
+        error();
+        return NULL;
+    }
+    
+    __device__ T* get(size_t, size_t);
+};
+
+// specializations for types we use
+template<>
+struct SharedMemory<float>
+{
+	size_t width;
+    size_t range;
+    
+    __device__ float* GetPointer(){
+        extern __shared__ float sh_float[];
+        // printf( "sh_float=%p\n", sh_float );
+        return sh_float;
+    }
+    
+    __device__ float* GetPointer(size_t blockWidth, size_t maskRange){
+        width = blockWidth;
+        range = maskRange;
+        extern __shared__ float sh_float[];
+        // printf( "sh_float=%p\n", sh_float );
+        return sh_float;
+    }
+    
+    __device__ float get(size_t h, size_t w){
+		float* sh = this->GetPointer();
+		printf("value: %f\n",sh[(h+range)*(width+2*range)+(w+range)]);
+		return sh[(h+range)*(width+2*range)+(w+range)];
+	}
+	
+};
+
+//template<typename T>
+//__device__ T getShared(SharedMemory<T> shared, size_t h, size_t w){
+//	return shared[(h+shared.range)*(shared.width+2*shared.range)+(w+shared.range)];
+//}
+*/
+
+>>>>>>> b9433c934dac6775f4c9992cd06902cb2dcb8e76
 //*******************************************************************************************
 // Stencil Kernels that must be implemented by the users.
 //*******************************************************************************************
@@ -78,9 +134,20 @@ __parallel__ void stencilKernel(Array<T1> input, Array<T1> output, Mask<T2> mask
  * \param[in] h height index for the current element to be processed.
  * \param[in] w width index for the current element to be processed.
  **/
+<<<<<<< HEAD
 template<typename T1, typename T2, class Args>
 __parallel__ void stencilKernel(Array2D<T1> input, Array2D<T1> output, Mask2D<T2> mask, Args args, size_t h, size_t w);
 
+=======
+
+//template<typename T1, class Args>
+//__parallel__ void stencilKernel(T1 input[BLOCK_SIZE][BLOCK_SIZE], T1 output[BLOCK_SIZE][BLOCK_SIZE], Args args, size_t ty, size_t tx);
+
+template<typename T1, typename T2, class Args>
+__parallel__ void stencilKernel(Array2D<T1> input, Array2D<T1> output, Mask2D<T2> mask, Args args, size_t h, size_t w);
+
+
+>>>>>>> b9433c934dac6775f4c9992cd06902cb2dcb8e76
 /**
  * Function signature of the stencil kernel for processing 3-dimensional arrays.
  * This function must be implemented by the user.
@@ -112,6 +179,16 @@ protected:
 	Args args;
 	Mask mask;
 
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+	//virtual void runSeq(Array in, Array out) = 0;
+	#ifdef PSKEL_TBB
+	virtual void runTBB(Array in, Array out, size_t numThreads) = 0;
+	#endif
+	virtual inline __attribute__((always_inline)) void runOpenMP(Array in, Array out, size_t width, size_t height, size_t depth, size_t maskRange) = 0;
+=======
+>>>>>>> b9433c934dac6775f4c9992cd06902cb2dcb8e76
 	#ifndef MPPA_MASTER
 	virtual void runSeq(Array in, Array out) = 0;
 	#endif
@@ -124,9 +201,16 @@ protected:
 	virtual void runOpenMP(Array in, Array out, size_t numThreads) = 0;
 	#endif
 
+<<<<<<< HEAD
 	#ifdef PSKEL_CUDA
 	void runCUDA(Array,Array,int);
 	void runIterativeTilingCUDA(Array in, Array out, StencilTiling<Array,Mask> tiling, size_t GPUBlockSize);
+=======
+>>>>>>> ee5501bdba3333d6dabd9b409c3bad5e35140a47
+	#ifdef PSKEL_CUDA
+	void runCUDA(Array,Array,size_t,size_t);
+	void runIterativeTilingCUDA(Array in, Array out, StencilTiling<Array,Mask> tiling, size_t GPUBlockSizeX, size_t GPUBlockSizeY);
+>>>>>>> b9433c934dac6775f4c9992cd06902cb2dcb8e76
 	#endif
 public:
 	/**
@@ -152,7 +236,11 @@ public:
 	 * \param[in] GPUBlockSize the block size used for the GPU processing the stencil kernel.
 	 * if GPUBlockSize is 0, the block size is automatically chosen.
 	 **/
+<<<<<<< HEAD
 	void runGPU(size_t GPUBlockSize=0);
+=======
+	void runGPU(size_t GPUBlockSizeX=0, size_t GPUBlockSizeY=0);
+>>>>>>> b9433c934dac6775f4c9992cd06902cb2dcb8e76
 	#endif
 
 	#ifdef PSKEL_CUDA
@@ -165,7 +253,11 @@ public:
 	 * \param[in] GPUBlockSize the block size used for the GPU processing the stencil kernel.
 	 * if GPUBlockSize is 0, the block size is automatically chosen.
 	 **/
+<<<<<<< HEAD
 	void runTilingGPU(size_t tilingWidth, size_t tilingHeight, size_t tilingDepth, size_t GPUBlockSize=0);
+=======
+	void runTilingGPU(size_t tilingWidth, size_t tilingHeight, size_t tilingDepth, size_t GPUBlockSizeX=0, size_t GPUBlockSizeY=0);
+>>>>>>> b9433c934dac6775f4c9992cd06902cb2dcb8e76
 	#endif
 
 	#ifdef PSKEL_CUDA
@@ -209,7 +301,27 @@ public:
 	 * \param[in] GPUBlockSize the block size used for the GPU processing the stencil kernel.
 	 * if GPUBlockSize is 0, the block size is automatically chosen.
 	 **/
+<<<<<<< HEAD
 	void runIterativeGPU(size_t iterations, size_t GPUBlockSize=0);
+=======
+	void runIterativeGPU(size_t iterations, size_t GPUBlockSizeX, size_t GPUBlockSizeY);
+	void runIterativeGPU(size_t iterations, size_t pyramidHeight, size_t GPUBlockSizeX, size_t GPUBlockSizeY);
+	#endif
+
+	#ifdef PSKEL_CUDA
+	/**
+	 * Executes in GPU and CPU multiple iterations of the stencil computation.
+	 * The input data is fractioned in two tiles by the gpuFactor.
+	 * The first fraction is processed by the GPU and the second by the CPU.
+	 * At each given iteration, except the first, the previous output is used as input.
+	 * \param[in] iterations the number of iterations to be computed.
+	 * \param[in] gpuFactor fraction of input data processed by the GPU.
+	 * \param[in] numThreads number of threads used by the CPU.
+	 * \param[in] GPUBlockSizeX the block size (x dimension) used for the GPU processing the stencil kernel.
+	 * \param[in] GPUBlockSizeY the block size (y dimension) used for the GPU processing the stencil kernel.
+	 **/
+	void runIterativePartition(size_t iterations, float gpuFactor, size_t numThreads=0, size_t GPUBlockSizeX=32, size_t GPUBlockSizeY=4);
+>>>>>>> b9433c934dac6775f4c9992cd06902cb2dcb8e76
 	#endif
 
 	#ifdef PSKEL_CUDA
@@ -226,7 +338,11 @@ public:
 	 * \param[in] GPUBlockSize the block size used for the GPU processing the stencil kernel.
 	 * if GPUBlockSize is 0, the block size is automatically chosen.
 	 **/
+<<<<<<< HEAD
 	void runIterativeTilingGPU(size_t iterations, size_t tilingWidth, size_t tilingHeight, size_t tilingDepth, size_t innerIterations=1, size_t GPUBlockSize=0);
+=======
+	void runIterativeTilingGPU(size_t iterations, size_t tilingWidth, size_t tilingHeight, size_t tilingDepth, size_t innerIterations=1, size_t GPUBlockSizeX=0, size_t GPUBlockSizeY=0);
+>>>>>>> b9433c934dac6775f4c9992cd06902cb2dcb8e76
 	#endif
 
 	#ifdef PSKEL_CUDA
@@ -316,12 +432,22 @@ class Stencil3D : public StencilBase<Array, Mask, Args>{
 protected:
 	#ifndef MPPA_MASTER
 	void runSeq(Array in, Array out);
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+	void runOpenMP(Array in, Array out, size_t width, size_t height, size_t depth, size_t maskRange);
+=======
+>>>>>>> b9433c934dac6775f4c9992cd06902cb2dcb8e76
 	#endif
 
 	#ifndef MPPA_MASTER
 	void runOpenMP(Array in, Array out, size_t numThreads);
 	#endif
 
+<<<<<<< HEAD
+=======
+>>>>>>> ee5501bdba3333d6dabd9b409c3bad5e35140a47
+>>>>>>> b9433c934dac6775f4c9992cd06902cb2dcb8e76
 	#ifdef PSKEL_TBB
 	void runTBB(Array in, Array out, size_t numThreads);
 	#endif
@@ -340,12 +466,22 @@ protected:
 
 	#ifndef MPPA_MASTER
 	void runSeq(Array in, Array out);
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+	inline __attribute__((always_inline)) void runOpenMP(Array in, Array out, size_t width, size_t height, size_t depth, size_t maskRange);
+=======
+>>>>>>> b9433c934dac6775f4c9992cd06902cb2dcb8e76
 	#endif
 
 	#ifndef MPPA_MASTER
 	void runOpenMP(Array in, Array out, size_t numThreads);
 	#endif
 
+<<<<<<< HEAD
+=======
+>>>>>>> ee5501bdba3333d6dabd9b409c3bad5e35140a47
+>>>>>>> b9433c934dac6775f4c9992cd06902cb2dcb8e76
 	#ifdef PSKEL_TBB
 	void runTBB(Array in, Array out, size_t numThreads);
 	#endif
@@ -367,12 +503,22 @@ protected:
 
 	#ifndef MPPA_MASTER
 	void runSeq(Array in, Array out);
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+	void runOpenMP(Array in, Array out, size_t width, size_t height, size_t depth, size_t maskRange);
+=======
+>>>>>>> b9433c934dac6775f4c9992cd06902cb2dcb8e76
 	#endif
 
 	#ifndef MPPA_MASTER
 	void runOpenMP(Array in, Array out, size_t numThreads);
 	#endif
 
+<<<<<<< HEAD
+=======
+>>>>>>> ee5501bdba3333d6dabd9b409c3bad5e35140a47
+>>>>>>> b9433c934dac6775f4c9992cd06902cb2dcb8e76
 	#ifdef PSKEL_TBB
 	void runTBB(Array in, Array out, size_t numThreads);
 	#endif

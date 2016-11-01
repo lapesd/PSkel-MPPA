@@ -31,6 +31,18 @@
 
 #ifndef PSKEL_ARRAY_HPP
 #define PSKEL_ARRAY_HPP
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+
+#define VALUE_TO_STRING(x) #x
+#define VALUE(x) VALUE_TO_STRING(x)
+#define VAR_NAME_VALUE(var) #var "="  VALUE(var)
+
+///#include <cstring>
+//#include <omp.h>
+=======
+>>>>>>> b9433c934dac6775f4c9992cd06902cb2dcb8e76
 #include <cstring>
 #include <iostream>
 
@@ -43,6 +55,10 @@
 #define MB 1024 * KB
 // maximum size of a message
 #define MAX_CLUSTER_SIZE 1 * MB + MB / 2
+<<<<<<< HEAD
+=======
+>>>>>>> ee5501bdba3333d6dabd9b409c3bad5e35140a47
+>>>>>>> b9433c934dac6775f4c9992cd06902cb2dcb8e76
 
 //Change how to read and write in the array for later use for a bunch of clusters
 namespace PSkel{
@@ -59,7 +75,19 @@ ArrayBase<T>::ArrayBase(size_t width, size_t height, size_t depth){
 	this->heightOffset = 0;
 	this->depthOffset = 0;
 	this->hostArray = 0;
+<<<<<<< HEAD
 	#ifdef PSKEL_CUDA
+=======
+	this->haloValue = (T) 0;
+	this->haloValuePtr = &(this->haloValue);
+	#ifdef PSKEL_CUDA
+<<<<<<< HEAD
+    	this->deviceArray = NULL;
+	#endif
+	
+	if(size()>0) this->hostAlloc();	
+=======
+>>>>>>> b9433c934dac6775f4c9992cd06902cb2dcb8e76
 		this->deviceArray = 0;
 	#endif
 	#ifdef PSKEL_MPPA
@@ -73,25 +101,48 @@ ArrayBase<T>::ArrayBase(size_t width, size_t height, size_t depth){
 	#else
 		if(size()>0) this->hostAlloc();
 	#endif
+<<<<<<< HEAD
+=======
+>>>>>>> ee5501bdba3333d6dabd9b409c3bad5e35140a47
+>>>>>>> b9433c934dac6775f4c9992cd06902cb2dcb8e76
 }
 
 #ifdef PSKEL_CUDA
 template<typename T>
+<<<<<<< HEAD
 void ArrayBase<T>::deviceAlloc(){
+=======
+__forceinline__ void ArrayBase<T>::deviceAlloc(){
+	#ifndef PSKEL_MANAGED
+>>>>>>> b9433c934dac6775f4c9992cd06902cb2dcb8e76
 	if(this->deviceArray==NULL){
 		gpuErrchk( cudaMalloc((void **) &deviceArray, size()*sizeof(T)) );
 		cudaMemset(this->deviceArray, 0, size()*sizeof(T));
 	}
+<<<<<<< HEAD
+=======
+	#endif
+>>>>>>> b9433c934dac6775f4c9992cd06902cb2dcb8e76
 }
 #endif
 
 #ifdef PSKEL_CUDA
 template<typename T>
+<<<<<<< HEAD
 void ArrayBase<T>::deviceFree(){
 	//if(this->deviceArray!=NULL){
 		cudaFree(this->deviceArray);
 		this->deviceArray = NULL;
 	//}
+=======
+__forceinline__ void ArrayBase<T>::deviceFree(){
+	#ifndef PSKEL_MANAGED
+	if(this->deviceArray!=NULL){
+		cudaFree(this->deviceArray);
+		this->deviceArray = NULL;
+	}
+	#endif
+>>>>>>> b9433c934dac6775f4c9992cd06902cb2dcb8e76
 }
 #endif
 
@@ -114,6 +165,14 @@ void ArrayBase<T>::hostAlloc(size_t width, size_t height, size_t depth){
 	this->hostAlloc();
 }
 
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+//TODO When using CUDA, a page-locked memory is allocated. Verify the diference
+//in performance between cudaMallocHost and cudaHostAlloc and its flags.
+//It seems that Cloudsim CPU Performance is worst with cudaMallocHost.
+=======
+>>>>>>> b9433c934dac6775f4c9992cd06902cb2dcb8e76
 #ifdef PSKEL_MPPA
 template<typename T>
 void ArrayBase<T>::mppaAlloc(){
@@ -177,64 +236,161 @@ void ArrayBase<T>::auxFree(){
 }	
 #endif
 
+<<<<<<< HEAD
 template<typename T>
 void ArrayBase<T>::hostAlloc(){
 	if(this->hostArray==NULL){
+=======
+>>>>>>> ee5501bdba3333d6dabd9b409c3bad5e35140a47
+template<typename T>
+__forceinline__ void ArrayBase<T>::hostAlloc(){
+	if(this->hostArray==NULL){
+<<<<<<< HEAD
+	#ifdef PSKEL_MANAGED
+		cudaMallocManaged((void**)&hostArray,size()*sizeof(T));
+	#else
+	#ifdef PSKEL_CUDAX
+            gpuErrchk( cudaMallocHost((void**)&hostArray, size()*sizeof(T)) );
+            cudaMemset(this->hostArray, 0, size()*sizeof(T));
+    #else
+            this->hostArray = (T*) calloc(size(), sizeof(T));
+    #endif
+	#endif
+	#ifdef DEBUG
+		printf("Array allocated at address %p\n",(void*)&(this->hostArray));
+	#endif
+=======
+>>>>>>> b9433c934dac6775f4c9992cd06902cb2dcb8e76
 		this->hostArray = (T*) calloc(size(), sizeof(T));
 		assert(this->hostArray != NULL);
 		//gpuErrchk( cudaMallocHost((void**)&hostArray, size()*sizeof(T)) );
 		//memset(this->hostArray, 0, size()*sizeof(T));
+<<<<<<< HEAD
+=======
+>>>>>>> ee5501bdba3333d6dabd9b409c3bad5e35140a47
+>>>>>>> b9433c934dac6775f4c9992cd06902cb2dcb8e76
 	}
 }
 	
 template<typename T>
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+__forceinline__ void ArrayBase<T>::hostFree(){
+	if(this->hostArray!=NULL){
+	#ifdef PSKEL_MANAGED
+		cudaFree(this->hostArray);
+	#else
+	#ifdef PSKEL_CUDAX
+		gpuErrchk( cudaFreeHost(this->hostArray) );
+	#else
+		free(this->hostArray);
+	#endif	
+	#endif
+	this->hostArray = NULL;
+	}
+=======
+>>>>>>> b9433c934dac6775f4c9992cd06902cb2dcb8e76
 void ArrayBase<T>::hostFree(){
 	//if(this->hostArray!=NULL){
 	free(this->hostArray);
 	//cudaFreeHost(this->hostArray);
 	this->hostArray = NULL;
 	//}
+<<<<<<< HEAD
 }
 
 template<typename T>
 size_t ArrayBase<T>::getWidth() const{
+=======
+>>>>>>> ee5501bdba3333d6dabd9b409c3bad5e35140a47
+}
+
+template<typename T>
+__forceinline __host__ __device__ size_t ArrayBase<T>::getWidth() const{
+>>>>>>> b9433c934dac6775f4c9992cd06902cb2dcb8e76
 	return width;
 }
 	
 template<typename T>
+<<<<<<< HEAD
 size_t ArrayBase<T>::getHeight() const{
+=======
+__forceinline __host__ __device__ size_t ArrayBase<T>::getHeight() const{
+>>>>>>> b9433c934dac6775f4c9992cd06902cb2dcb8e76
 	return height;
 }
 
 template<typename T>
+<<<<<<< HEAD
 size_t ArrayBase<T>::getDepth() const{
 	return depth;
 }
 	
 template<typename T>
 size_t ArrayBase<T>::memSize() const{
+=======
+__forceinline __host__ __device__ size_t ArrayBase<T>::getDepth() const{
+	return depth;
+}
+
+template<typename T>
+__forceinline __host__ __device__ size_t ArrayBase<T>::getWidthOffset() const{
+        return widthOffset;
+}
+
+template<typename T>
+__forceinline __host__ __device__ size_t ArrayBase<T>::getHeightOffset() const{
+        return heightOffset;
+}
+
+template<typename T>
+__forceinline __host__ __device__ size_t ArrayBase<T>::getDepthOffset() const{
+        return depthOffset;
+}
+
+	
+template<typename T>
+__forceinline__ size_t ArrayBase<T>::memSize() const{
+>>>>>>> b9433c934dac6775f4c9992cd06902cb2dcb8e76
 	return size()*sizeof(T);
 }
 
 template<typename T>
+<<<<<<< HEAD
 size_t ArrayBase<T>::size() const{
+=======
+__forceinline__ size_t ArrayBase<T>::size() const{
+>>>>>>> b9433c934dac6775f4c9992cd06902cb2dcb8e76
 	return height*width*depth;
 }
 
 template<typename T>
+<<<<<<< HEAD
 size_t ArrayBase<T>::realSize() const{
+=======
+__forceinline__ size_t ArrayBase<T>::realSize() const{
+>>>>>>> b9433c934dac6775f4c9992cd06902cb2dcb8e76
 	return realHeight*realWidth*realDepth;
 }
 
 #ifdef PSKEL_CUDA
 template<typename T>
+<<<<<<< HEAD
 __device__ __forceinline__ T & ArrayBase<T>::deviceGet(size_t h, size_t w, size_t d) const {
+=======
+__forceinline__ __device__ T & ArrayBase<T>::deviceGet(size_t h, size_t w, size_t d) const {
+>>>>>>> b9433c934dac6775f4c9992cd06902cb2dcb8e76
 	return this->deviceArray[(h*width+w)*depth+d];
 }
 #endif
 
 template<typename T>
+<<<<<<< HEAD
 T & ArrayBase<T>::hostGet(size_t h, size_t w, size_t d) const {
+=======
+__forceinline__  __host__ T & ArrayBase<T>::hostGet(size_t h, size_t w, size_t d) const {
+>>>>>>> b9433c934dac6775f4c9992cd06902cb2dcb8e76
 	return this->hostArray[ ((h+heightOffset)*realWidth + (w+widthOffset))*realDepth + (d+depthOffset) ];
 }
 
@@ -271,8 +427,20 @@ void ArrayBase<T>::hostSlice(Arrays array, size_t widthOffset, size_t heightOffs
 	#endif
 	#ifndef PSKEL_MPPA
 	this->hostArray = array.hostArray;
+<<<<<<< HEAD
 	#else
 	this->mppaArray = array.mppaArray;
+=======
+<<<<<<< HEAD
+
+	#if DEBUG
+		printf("Array of address %p sliced with offset (%d,%d,%d) starting at address %p\n",
+		 (void*)&(array.hostArray),this->widthOffset,this->heightOffset,this->depthOffset,(void*)&(this->hostGet(0,0,0)));
+=======
+	#else
+	this->mppaArray = array.mppaArray;
+>>>>>>> ee5501bdba3333d6dabd9b409c3bad5e35140a47
+>>>>>>> b9433c934dac6775f4c9992cd06902cb2dcb8e76
 	#endif
 }
 
@@ -537,6 +705,12 @@ void ArrayBase<T>::closeWritePortal(){
 #ifndef MPPA_MASTER
 template<typename T> template<typename Arrays>
 void ArrayBase<T>::hostMemCopy(Arrays array){
+<<<<<<< HEAD
+=======
+	#ifdef TIMER
+		double start = omp_get_wtime();
+	#endif
+>>>>>>> b9433c934dac6775f4c9992cd06902cb2dcb8e76
 	if(array.size()==array.realSize() && this->size()==this->realSize()){
 		memcpy(this->hostArray, array.hostArray, size()*sizeof(T));
 	}else{
@@ -547,6 +721,13 @@ void ArrayBase<T>::hostMemCopy(Arrays array){
                         this->hostGet(i,j,k)=array.hostGet(i,j,k);
 		}}}
 	}
+<<<<<<< HEAD
+=======
+	#ifdef TIMER
+		double end = omp_get_wtime();
+		printf("Host copy from address %p to address %p took %f seconds\n",&(array.hostArray),&(this->hostArray),end-start);
+	#endif
+>>>>>>> b9433c934dac6775f4c9992cd06902cb2dcb8e76
 }
 #endif
 
@@ -596,6 +777,10 @@ void ArrayBase<T>::mppaMemCopy(Arrays array){
 #ifdef PSKEL_CUDA
 template<typename T>
 void ArrayBase<T>::copyToDevice(){
+<<<<<<< HEAD
+=======
+	#ifndef PSKEL_MANAGED
+>>>>>>> b9433c934dac6775f4c9992cd06902cb2dcb8e76
 	if(size()==realSize()){
 		gpuErrchk ( cudaMemcpy(deviceArray, hostArray, size()*sizeof(T), cudaMemcpyHostToDevice) );
 	}else if(depth==realDepth && width==realWidth){
@@ -618,12 +803,20 @@ void ArrayBase<T>::copyToDevice(){
 		gpuErrchk ( cudaMemcpy(deviceArray, copyPtr, size()*sizeof(T), cudaMemcpyHostToDevice) );
 		cudaFreeHost(copyPtr);
 	}
+<<<<<<< HEAD
+=======
+	#endif
+>>>>>>> b9433c934dac6775f4c9992cd06902cb2dcb8e76
 }
 #endif
 
 #ifdef PSKEL_CUDA
 template<typename T> template<typename Arrays>
 void ArrayBase<T>::copyFromDevice(Arrays array){
+<<<<<<< HEAD
+=======
+	#ifndef PSKEL_MANAGED
+>>>>>>> b9433c934dac6775f4c9992cd06902cb2dcb8e76
 	if(array.size()==realSize()){
 		gpuErrchk ( cudaMemcpy(hostArray, array.deviceArray, array.size()*sizeof(T),cudaMemcpyDeviceToHost) );
 	}else if(array.depth==realDepth && array.width==realWidth){
@@ -646,6 +839,10 @@ void ArrayBase<T>::copyFromDevice(Arrays array){
 		}}}
 		cudaFreeHost(copyPtr);
 	}
+<<<<<<< HEAD
+=======
+	#endif
+>>>>>>> b9433c934dac6775f4c9992cd06902cb2dcb8e76
 }
 #endif
 
@@ -678,7 +875,11 @@ void ArrayBase<T>::copyToHost(){
 #endif
 
 template<typename T>
+<<<<<<< HEAD
 ArrayBase<T>::operator bool() const {
+=======
+__forceinline__ __host__ __device__ ArrayBase<T>::operator bool() const {
+>>>>>>> b9433c934dac6775f4c9992cd06902cb2dcb8e76
 	#ifdef __CUDA_ARCH__
 	return(this->deviceArray!=NULL);
 	#else
@@ -704,12 +905,27 @@ template<typename T>
 Array3D<T>::Array3D(size_t width, size_t height, size_t depth) : ArrayBase<T>(width,height,depth){}
 
 template<typename T>
+<<<<<<< HEAD
 T & Array3D<T>::operator()(size_t h,size_t w,size_t d) const {
 	#ifdef __CUDA_ARCH__
+=======
+__forceinline__ __host__ __device__ T & Array3D<T>::operator()(size_t h,size_t w,size_t d) const {
+	#ifdef __CUDA_ARCH__
+<<<<<<< HEAD
+		/* TODO deviceGet is not inlining!
+		 return this->deviceGet(h,w,d);
+		*/  
+		return this->deviceArray[(h*width+w)*depth+d];
+=======
+>>>>>>> b9433c934dac6775f4c9992cd06902cb2dcb8e76
 		return this->deviceGet(h,w,d);
 	#endif
 	#ifdef PSKEL_MPPA
 		return this->mppaGet(h,w,d);
+<<<<<<< HEAD
+=======
+>>>>>>> ee5501bdba3333d6dabd9b409c3bad5e35140a47
+>>>>>>> b9433c934dac6775f4c9992cd06902cb2dcb8e76
 	#else
 		return this->hostGet(h,w,d);
 	#endif
@@ -731,14 +947,39 @@ template<typename T>
 Array2D<T>::Array2D(size_t width, size_t height) : ArrayBase<T>(width,height,1){}
 
 template<typename T>
+<<<<<<< HEAD
 T & Array2D<T>::operator()(size_t h, size_t w) const {
 	#ifdef __CUDA_ARCH__
+=======
+__forceinline __host__ __device__ T & Array2D<T>::operator()(size_t h, size_t w) const {
+	#ifdef PSKEL_MANAGED
+		return this->hostGet(h,w,0);
+	#else
+	#ifdef __CUDA_ARCH__
+<<<<<<< HEAD
+		/* TODO deviceGet is not inlining!
+		return this->deviceGet(h,w,0); 
+		*/
+		return this->deviceArray[h*this->width+w];
+=======
+>>>>>>> b9433c934dac6775f4c9992cd06902cb2dcb8e76
 		return this->deviceGet(h,w,0);
 	#endif
 	#ifdef PSKEL_MPPA
 		return this->mppaGet(h,w,0);
+<<<<<<< HEAD
 	#else
 		return this->hostGet(h,w,0);
+=======
+>>>>>>> ee5501bdba3333d6dabd9b409c3bad5e35140a47
+	#else
+		//return this->hostGet(h,w,0);
+		//return ((h+this->heightOffset)<this->realHeight && (w+this->widthOffset)<this->realWidth)
+		//	? this->hostArray[ ((h+this->heightOffset)*this->realWidth + (w+this->widthOffset))] : this->haloValuePtr[0];
+		return this->hostArray[((h+this->heightOffset)*this->realWidth + (w+this->widthOffset))];
+	
+	#endif
+>>>>>>> b9433c934dac6775f4c9992cd06902cb2dcb8e76
 	#endif
 }
 
@@ -753,12 +994,27 @@ template<typename T>
 Array<T>::Array(size_t size) : ArrayBase<T>(size,1,1){}
 
 template<typename T>
+<<<<<<< HEAD
 T & Array<T>::operator()(size_t w) const {
 	#ifdef __CUDA_ARCH__
+=======
+__forceinline__ __host__ __device__ T & Array<T>::operator()(size_t w) const {
+	#ifdef __CUDA_ARCH__
+<<<<<<< HEAD
+		/* TODO deviceGet is not inlining!
+ 		* return this->deviceGet(0,w,0);
+ 		*/
+		return this->deviceArray[w];
+=======
+>>>>>>> b9433c934dac6775f4c9992cd06902cb2dcb8e76
 		return this->deviceGet(0,w,0);
 	#endif
 	#ifdef PSKEL_MPPA
 		return this->mppaGet(0,w,0);
+<<<<<<< HEAD
+=======
+>>>>>>> ee5501bdba3333d6dabd9b409c3bad5e35140a47
+>>>>>>> b9433c934dac6775f4c9992cd06902cb2dcb8e76
 	#else
 		return this->hostGet(0,w,0);
 	#endif
