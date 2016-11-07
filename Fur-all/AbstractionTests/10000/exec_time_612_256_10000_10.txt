@@ -1,0 +1,15 @@
+IODDR0@0.0: RM 0: width: 612
+IODDR0@0.0: RM 0: height: 256
+IODDR0@0.0: RM 0: tilingHeight: 128
+IODDR0@0.0: RM 0: tilingWidth: 128
+IODDR0@0.0: RM 0: iterations: 10000
+IODDR0@0.0: RM 0: innerIterations: 10000
+IODDR0@0.0: RM 0: nb_clusters: 10
+IODDR0@0.0: RM 0: nb_threads: 16
+IODDR0@0.0: RM 0: Master Time: 151.7
+====== BOARD 0 ======
+
+ - Acquisition time: 153.28 s
+ - MPPA 0 Power
+   - Power (avg): 8.00 W
+   - Energy     : 1225.94 J

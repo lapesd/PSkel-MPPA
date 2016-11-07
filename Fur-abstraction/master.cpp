@@ -9,8 +9,9 @@
 #include <fstream>
 #include <string>
 #include <math.h>
-#include "interface_mppa.h"
-
+#include "/include/interface_mppa.h"
+#define PSKEL_MPPA
+#define MPPA_MASTER
 #define ARGC_SLAVE 11
 //#define DEBUG
 // #define TIMER
@@ -43,7 +44,7 @@ int main(int argc, char **argv){
   int cluster_id;
   int pid;
 	
-  int nb_clusters = 16;
+  int nb_clusters = atoi(argv[1]);
 
     struct timeval start=mppa_master_get_time();
 

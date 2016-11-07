@@ -43,8 +43,8 @@ int main(int argc, char **argv){
   int cluster_id;
   int pid;
 	
-  int nb_clusters = 16;
-
+  int nb_clusters = atoi(argv[1]);
+  printf("%d\n", nb_clusters);
     struct timeval start=mppa_master_get_time();
 
     char **argv_slave = (char**) malloc(sizeof (char*) * ARGC_SLAVE);

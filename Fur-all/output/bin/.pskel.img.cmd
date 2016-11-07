@@ -1,0 +1,1 @@
+cmd_output/bin/pskel.img := pushd output/bin > /dev/null; /usr/local/k1tools/bin/k1-create-multibinary  --clusters slave  --clusters-names slave       --boot master  -T pskel.img -f  ; popd > /dev/null
