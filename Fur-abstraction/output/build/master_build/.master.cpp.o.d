@@ -108,7 +108,11 @@ output/build/master_build/master.cpp.o: master.cpp \
  /usr/local/k1tools/k1-rtems/include/c++/4.9.3/k1-rtems/k1bio/le/bare/bits/basic_file.h \
  /usr/local/k1tools/k1-rtems/include/c++/4.9.3/k1-rtems/k1bio/le/bare/bits/c++io.h \
  /usr/local/k1tools/k1-rtems/include/c++/4.9.3/bits/fstream.tcc \
+<<<<<<< HEAD
  /usr/local/k1tools/k1-rtems/include/math.h interface_mppa.h \
+=======
+ /usr/local/k1tools/k1-rtems/include/math.h include/interface_mppa.h \
+>>>>>>> 10ffcd9c35e8d28c8a2056867ba206fa3af8af1e
  /usr/local/k1tools/k1-rtems/include/inttypes.h \
  /usr/local/k1tools/lib/gcc/k1-rtems/4.9.3/include/stdint.h \
  /usr/local/k1tools/k1-rtems/include/stdint.h \

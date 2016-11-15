@@ -21,17 +21,26 @@ markers = ['o','D','s','x']
 xs = [2,4,6,8,10,12,14,16]
 
 #Fur Communication
-ys = [0.12009, 0.120218, 0.119932, 0.119858, 0.120162, 0.120196, 0.13052, 0.130118]
-plt.plot(xs,ys,marker=markers[2],linewidth=2,label='Fur Communication')
+ys = [1.73001, 1.73991, 1.74006, 1.73988, 1.73991, 1.74014, 1.74028, 1.73986]
+plt.plot(xs,ys,marker=markers[2],linewidth=2,label='Fur No Abstraction 1000')
 
 # #Fur without Communication
-# ys = [94.6803, 47.4601, 35.5, 23.8396, 23.6799, 23.61, 23.5501, 12.0402]
-# plt.plot(xs,ys,marker=markers[0],linewidth=2,label='Fur without Communication')
+ys = [15.3002, 15.3099, 15.3004, 15.3004, 15.2099, 15.31, 15.3203, 15.3201]
+plt.plot(xs,ys,marker=markers[0],linewidth=2,label='Fur No Abstraction 10000')
+
+#Fur Communication
+ys = [14.8198,  14.8204, 14.8302, 14.8302, 14.8302, 14.93, 14.8305, 14.8301]
+plt.plot(xs,ys,marker=markers[2],linewidth=2,label='Fur Abstraction 1000')
+
+#Fur without Communication
+ys = [146.17, 146.18, 146.18, 146.3, 146.29, 146.09, 146.2, 146.18]
+plt.plot(xs,ys,marker=markers[0],linewidth=2,label='Fur Abstraction 10000')
+
 
 plt.xticks([w*2 for w in range(9)])
 plt.yticks([0, 1])
 plt.xlim(1.8,16.2)
-plt.ylim(0,1.2)
+plt.ylim(0,150.7)
 
 plt.xlabel('Number of clusters')
 plt.ylabel('Execution Time')
@@ -43,4 +52,4 @@ plt.grid(which='major')
 plt.tick_params(labelsize=19, pad=5, width=2)
 plt.legend(loc='best', fontsize = 'small', ncol=1)
 
-plt.savefig('mppa-communicationNoabstract.pdf')
+plt.savefig('mppa-communication.pdf')

@@ -13,9 +13,8 @@
 #define BARRIER_SYNC_MASTER "/mppa/sync/128:1"
 #define BARRIER_SYNC_SLAVE "/mppa/sync/[0..15]:2"
 
-
-#define HEIGHT 256
-#define WIDTH 256
+#define HEIGHT 128
+#define WIDTH 128
 //#define ITERATIONS 1000
 
 #define INPUT(x, y, w, h) input[(y+w)*WIDTH + (x+h)]

@@ -9,7 +9,8 @@
 #include <fstream>
 #include <string>
 #include <math.h>
-#include "/include/interface_mppa.h"
+#include "include/interface_mppa.h"
+
 #define PSKEL_MPPA
 #define MPPA_MASTER
 #define ARGC_SLAVE 11
@@ -39,11 +40,11 @@ int CalcSize(int level){
 
 
 
-int main(int argc, char **argv){ 
+int main(int argc, char **argv){
   int i;
   int cluster_id;
   int pid;
-	
+
   int nb_clusters = atoi(argv[1]);
 
     struct timeval start=mppa_master_get_time();
@@ -53,7 +54,7 @@ int main(int argc, char **argv){
       argv_slave[i] = (char*) malloc (sizeof (char) * 11);
     argv_slave[10] = NULL;
 
-	  
+
     // Spawn slave processes
     for (cluster_id = 0; cluster_id < nb_clusters; cluster_id++) {
       pid = mppa_spawn(cluster_id, NULL, "slave", (const char **)argv_slave, NULL);
@@ -62,17 +63,17 @@ int main(int argc, char **argv){
     for (i = 0; i < ARGC_SLAVE; i++)
       free(argv_slave[i]);
     free(argv_slave);
-    
+
 #ifdef DEBUG
     cout << "Clusters spawned!" << endl;
 #endif
-    
+
     for (i = 0; i < nb_clusters; i++) {
       mppa_waitpid(i, NULL, 0);
-    } 
- 
+    }
+
    struct timeval end=mppa_master_get_time();
     cout<<"Master Time: " << mppa_diff_time(start,end) << endl;
-    
+
     mppa_exit(0);
 }
