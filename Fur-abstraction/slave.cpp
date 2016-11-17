@@ -32,16 +32,17 @@ struct Arguments
 };
 
 void stencilKernel(Array2D<int> input,Array2D<int> output,Mask2D<int> mask, Arguments arg, size_t h, size_t w){
-    int numberA = 0;
+  	int numberA = 0;
     int numberI = 0;
     for (int z = 0; z < mask.size; z++) {
     	if(z < arg.internCircle) {
-			numberA += mask.get(z, input, h, w);
-		} else {
+					numberA += mask.get(z, input, h, w);
+			} else {
         	numberI += mask.get(z, input, h, w);
         	//printf("I: %d\n", numberI);
-      	}
-	}
+    	}
+		}
+
     //printf("A: %d\n", numberA);
     float totalPowerI = numberI*(arg.power);// The power of Inhibitors
     //printf("Power of I: %f\n", totalPowerI);
@@ -52,7 +53,9 @@ void stencilKernel(Array2D<int> input,Array2D<int> output,Mask2D<int> mask, Argu
     } else {
 		output(h,w) = input(h,w);//doesn't change
     }
+
 }
+
 
 int CalcSize(int level){
 	if (level == 1) {
@@ -107,8 +110,9 @@ int main(int argc,char **argv) {
 	Array2D<int> input(WIDTH, HEIGHT);
 	Array2D<int> output(WIDTH, HEIGHT);
 
+
 	omp_set_num_threads(16);
-	
+
 	for (unsigned long int it = 0; it < ITERATIONS; it++) {
 		#pragma omp parallel for
 		for (int h = 0; h < HEIGHT; h++){
