@@ -41,7 +41,7 @@ void stencilKernel(Array2D<int> input,Array2D<int> output,Mask2D<int> mask, Argu
         	numberI += mask.get(z, input, h, w);
         	//printf("I: %d\n", numberI);
       	}
-		}
+	}
     //printf("A: %d\n", numberA);
     float totalPowerI = numberI*(arg.power);// The power of Inhibitors
     //printf("Power of I: %f\n", totalPowerI);
@@ -108,7 +108,7 @@ int main(int argc,char **argv) {
 	Array2D<int> output(WIDTH, HEIGHT);
 
 	omp_set_num_threads(16);
-
+	
 	for (unsigned long int it = 0; it < ITERATIONS; it++) {
 		#pragma omp parallel for
 		for (int h = 0; h < HEIGHT; h++){
