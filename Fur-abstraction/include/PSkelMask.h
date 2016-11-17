@@ -69,11 +69,6 @@ protected:
          * it is calculated as the maximum absolute value on the mask.
          **/
 	MaskBase(size_t size=0, size_t dimension=0, T haloVal=T(0), size_t range=0);
-<<<<<<< HEAD
-=======
-	//template<size_t rows, size_t cols>
-	//MaskBase(size_t size, int (&array)[][]);
->>>>>>> b9433c934dac6775f4c9992cd06902cb2dcb8e76
 public:
 	size_t size, dimension;
 	size_t range;
@@ -114,17 +109,7 @@ public:
 	 * \return the weight of the specified element.
 	 **/
 	__device__ __host__ T getWeight(size_t n);
-<<<<<<< HEAD
 		
-=======
-	
-	
-	__device__ T* GetSharedPointer( void ){
-        extern __device__ void error( void );
-        error();
-        return NULL;
-    }	
->>>>>>> b9433c934dac6775f4c9992cd06902cb2dcb8e76
 };
 
 
@@ -193,11 +178,6 @@ public:
          **/
 	Mask2D(size_t size=0, T haloVal=T(0), size_t range=0);
 	
-<<<<<<< HEAD
-=======
-	Mask2D(size_t size, int array[][2]);
-	
->>>>>>> b9433c934dac6775f4c9992cd06902cb2dcb8e76
 	/**
          * Set the mask information for accessing the n-th neighbor for a given element.
          * \param[in] n the index of the neighbor.

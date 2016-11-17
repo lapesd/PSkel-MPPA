@@ -774,7 +774,7 @@ void StencilBase<Array, Mask,Args>::runMPPA(int cluster_id, int nb_threads, int 
 			// int heightOffset = aux[0];
 			// int it = aux[1];
 			// int subIterations = aux[2];
-			int subIterations = 10000;
+			int subIterations = 1;
 			// int coreWidthOffset = aux[3];
 			// int coreHeightOffset = aux[4];
 			// int coreDepthOffset = aux[5];
@@ -919,7 +919,7 @@ void StencilBase<Array, Mask,Args>::runMPPA(int cluster_id, int nb_threads, int 
 }
 #endif
 
-#ifndef MPPA_MASTER
+#ifdef PSKEL_MPPA
 template<class Array, class Mask, class Args>
 void StencilBase<Array, Mask,Args>::runIterativeMPPA(Array in, Array out, int iterations, size_t numThreads){
 	for(int i = 0; i < iterations; i++) {

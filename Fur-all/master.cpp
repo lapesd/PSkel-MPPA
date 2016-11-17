@@ -18,7 +18,7 @@
 //#define TIME_EXEC
 //#define TIME_SEND
 #include "include/PSkel.h"
-
+#include "interface_mppa.h"
 
 using namespace std;
 using namespace PSkel;
@@ -81,16 +81,16 @@ int main(int argc, char **argv){
   
   //Mask configuration
   int level = 1;
-    int power = 2;
-    int count = 0;
-    int internCircle = pow(CalcSize(level), 2) - 1;
-    int externCircle = pow(CalcSize(2*level), 2) - 1 - internCircle;
-    int size = internCircle + externCircle;
+  int power = 2;
+  int count = 0;
+  int internCircle = pow(CalcSize(level), 2) - 1;
+  int externCircle = pow(CalcSize(2*level), 2) - 1 - internCircle;
+  int size = internCircle + externCircle;
   
   
   Array2D<int> inputGrid(width,height);
   Array2D<int> outputGrid(width,height);
-    Mask2D<int> mask(size);
+  Mask2D<int> mask(size);
 
   for (int x = (level-2*level); x <= level; x++) {
     for (int y = (level-2*level); y <= level; y++) {
@@ -100,7 +100,7 @@ int main(int argc, char **argv){
         count++;
       }
     }
-    }
+  }
 
     for (int x = (2*level-4*level); x <= 2*level; x++) {
     for (int y = (2*level-4*level); y <= 2*level; y++) {
@@ -112,7 +112,7 @@ int main(int argc, char **argv){
         }
       }
     }
-    }
+  }
 
   //Arguments arg;
 

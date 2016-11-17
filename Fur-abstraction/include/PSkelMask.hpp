@@ -116,11 +116,7 @@ __host__ __device__ size_t MaskBase<T>::size() const{
 }
 */
 template<typename T>
-<<<<<<< HEAD
 T MaskBase<T>::getWeight(size_t n){
-=======
-__forceinline__ __host__ __device__ T MaskBase<T>::getWeight(size_t n) {
->>>>>>> b9433c934dac6775f4c9992cd06902cb2dcb8e76
 	#ifdef __CUDA_ARCH__
 		return deviceWeight[n];
 	#else
@@ -128,32 +124,6 @@ __forceinline__ __host__ __device__ T MaskBase<T>::getWeight(size_t n) {
 	#endif
 }
 
-<<<<<<< HEAD
-=======
-// specializations for types we use
-template<>
-__device__ float* MaskBase<float>::GetSharedPointer(){
-	extern __shared__ float sh_float[];
-	printf( "sh_float=%p\n", sh_float );
-	return sh_float;
-}
-
-template<>
-__device__ int* MaskBase<int>::GetSharedPointer(){
-	extern __shared__ int sh_int[];
-	// printf( "sh_float=%p\n", sh_float );
-	return sh_int;
-}
-
-
-template<>
-__device__ bool* MaskBase<bool>::GetSharedPointer(){
-	extern __shared__ bool sh_bool[];
-	// printf( "sh_float=%p\n", sh_float );
-	return sh_bool;
-}
-
->>>>>>> b9433c934dac6775f4c9992cd06902cb2dcb8e76
 //*******************************************************************************************
 // MASK3D
 //*******************************************************************************************
@@ -264,16 +234,6 @@ int Mask3D<T>::setMaskRadius(Arrays array){
 template<typename T>
 Mask2D<T>::Mask2D(size_t size, T haloVal, size_t range) : MaskBase<T>(size,2,haloVal, range) {}
 
-<<<<<<< HEAD
-=======
-template<typename T>
-Mask2D<T>::Mask2D(size_t size, int array[][2]): MaskBase<T>(size, 2, 0,0){
-	for(size_t i=0;i<size;i++){
-		this->set(i,array[i][0],array[i][1],(T)1);
-	}
-}
-	
->>>>>>> b9433c934dac6775f4c9992cd06902cb2dcb8e76
 	
 template<typename T>
 void Mask2D<T>::set(size_t n, int h, int w, T weight){
@@ -302,11 +262,7 @@ void Mask2D<T>::set(size_t n, int h,int w){
 }
 */	
 template<typename T> template<typename V>
-<<<<<<< HEAD
 T Mask2D<T>::get(size_t n, Array2D<V> array, size_t h, size_t w){
-=======
-__forceinline__ __host__ __device__ T Mask2D<T>::get(size_t n, Array2D<V> array, size_t h, size_t w){
->>>>>>> b9433c934dac6775f4c9992cd06902cb2dcb8e76
 	#ifdef __CUDA_ARCH__
 		h += this->deviceMask[this->dimension*n];
 		w += this->deviceMask[this->dimension*n+1];

@@ -57,7 +57,6 @@ namespace PSkel{
  **/
 template<typename T>
 class ArrayBase{
-<<<<<<< HEAD
 private:
 	//variables that hold the real boundaries (total allocated data.)
 	size_t realWidth, realHeight, realDepth;
@@ -70,34 +69,6 @@ private:
 	#ifdef PSKEL_CUDA
 	T *deviceArray;
 	#endif
-=======
-public: 
-	#ifdef PSKEL_CUDA
-	T *deviceArray; /*For shared memory. Change this later */
-	#endif
-
-protected:
-	//variables that hold the real boundaries (total allocated data.)
-	size_t realWidth, realHeight, realDepth;
-	//variables that hold the "virtual" array boundaries (important for sliced arrays.)
-	//size_t width, height,depth;
-	//offsets for the sliced array.
-	size_t widthOffset, heightOffset, depthOffset;
-	
-	//variables that hold the "virtual" array boundaries (important for sliced arrays.)
-	size_t width, height,depth;
-	
-	//host and device (GPU memory) pointers
-	T *hostArray; // __attribute__((aligned(64)));
-	T haloValue;
-	T* haloValuePtr;
-	#ifdef PSKEL_CUDA
-	//T *deviceArray;
-	#endif
-<<<<<<< HEAD
-
-=======
->>>>>>> b9433c934dac6775f4c9992cd06902cb2dcb8e76
 	#ifdef PSKEL_MPPA
 	T *mppaArray;
  	portal_t *write_portal;
@@ -109,10 +80,6 @@ protected:
 	#endif
 	
 protected:
-<<<<<<< HEAD
-=======
->>>>>>> ee5501bdba3333d6dabd9b409c3bad5e35140a47
->>>>>>> b9433c934dac6775f4c9992cd06902cb2dcb8e76
 	#ifdef PSKEL_CUDA
 	/**
          * Access a specific element of the array allocated in the device memory.
@@ -209,28 +176,6 @@ public:
 	 **/
 	__device__ __host__ size_t getDepth() const;
 	
-<<<<<<< HEAD
-=======
-	 /**
-	 *          * Get the width size of the "virtual" array.
- 	*                   * \return the "virtual" width of the array data structure.
- 	*                            **/
-        __device__ __host__ size_t getWidthOffset() const;
-
-        /**
-	* Get the height size of the "virtual" array.
-	 *                   * \return the "virtual" height of the array data structure.
-	 *                            **/
-        __device__ __host__ size_t getHeightOffset() const;
-
-        /**
-	 *          * Get the depth size of the "virtual" array.
-	     	            * \return the "virtual" depth of the array data structure.
-	 *                            **/
-        __device__ __host__ size_t getDepthOffset() const;
-
-
->>>>>>> b9433c934dac6775f4c9992cd06902cb2dcb8e76
 	/**
 	 * Get the size, in bytes, of the allocated memory for the "virtual" array.
 	 * \return the total of bytes allocated in memory for the "virtual" array.

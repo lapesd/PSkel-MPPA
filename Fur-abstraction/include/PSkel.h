@@ -63,7 +63,6 @@ runtime details.
 #include <time.h>
 #include <typeinfo>
 #include <iostream>
-<<<<<<< HEAD
 #ifdef PSKEL_CUDA
 #include <cuda.h>
 #include <cuda_runtime_api.h>
@@ -73,34 +72,6 @@ runtime details.
 #include <tbb/parallel_for.h>
 #include <tbb/task_scheduler_init.h>
 #endif
-=======
-#include <omp.h>
-
-#ifdef PSKEL_CUDA
-    #include <cuda.h>
-    #include <cuda_runtime_api.h>
-#endif
-
-#ifdef PSKEL_TBB
-    #include <tbb/blocked_range.h>
-    #include <tbb/parallel_for.h>
-    #include <tbb/task_scheduler_init.h>
-#endif
-
-#ifdef DEBUG
-    #include "hr_time.h"
-#endif
-
-#ifdef PSKEL_PAPI
-	#include  "PSkelPAPI.h"
-#endif
-
-#ifdef PSKEL_GA
-    #include <ga/ga.h>
-    #include <ga/std_stream.h>
-#endif
-
->>>>>>> b9433c934dac6775f4c9992cd06902cb2dcb8e76
 #ifdef PSKEL_MPPA
 #include "interface_mppa.h"
 #ifndef MPPA_MASTER
@@ -111,17 +82,9 @@ runtime details.
 
 #include "PSkelDefs.h"
 #include "PSkelArray.h"
-<<<<<<< HEAD
 #ifdef PSKEL_CUDA
 #include "PSkelArgs.h"
 #endif
-=======
-
-#ifdef PSKEL_CUDA
-    #include "PSkelArgs.h"
-#endif
-
->>>>>>> b9433c934dac6775f4c9992cd06902cb2dcb8e76
 #include "PSkelMask.h"
 #include "PSkelStencil.h"
 

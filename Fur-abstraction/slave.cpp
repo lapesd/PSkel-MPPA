@@ -31,12 +31,7 @@ struct Arguments
 	float power;
 };
 
-<<<<<<< HEAD
 void stencilKernel(Array2D<int> input,Array2D<int> output,Mask2D<int> mask, Arguments arg, size_t h, size_t w){
-=======
-namespace PSkel{
-__parallel__ void stencilKernel(Array2D<int> input,Array2D<int> output,Mask2D<int> mask, Arguments arg, size_t h, size_t w){
->>>>>>> b9433c934dac6775f4c9992cd06902cb2dcb8e76
     int numberA = 0;
     int numberI = 0;
     for (int z = 0; z < mask.size; z++) {
@@ -46,11 +41,7 @@ __parallel__ void stencilKernel(Array2D<int> input,Array2D<int> output,Mask2D<in
         	numberI += mask.get(z, input, h, w);
         	//printf("I: %d\n", numberI);
       	}
-<<<<<<< HEAD
-	}
-=======
-    }
->>>>>>> b9433c934dac6775f4c9992cd06902cb2dcb8e76
+		}
     //printf("A: %d\n", numberA);
     float totalPowerI = numberI*(arg.power);// The power of Inhibitors
     //printf("Power of I: %f\n", totalPowerI);
@@ -61,10 +52,6 @@ __parallel__ void stencilKernel(Array2D<int> input,Array2D<int> output,Mask2D<in
     } else {
 		output(h,w) = input(h,w);//doesn't change
     }
-<<<<<<< HEAD
-=======
-  }
->>>>>>> b9433c934dac6775f4c9992cd06902cb2dcb8e76
 }
 
 int CalcSize(int level){
@@ -120,22 +107,13 @@ int main(int argc,char **argv) {
 	Array2D<int> input(WIDTH, HEIGHT);
 	Array2D<int> output(WIDTH, HEIGHT);
 
-<<<<<<< HEAD
-	//Stencil2D<Array2D<int>, Mask2D<int>, Arguments> stencil(input, output, mask, arg);
-=======
->>>>>>> b9433c934dac6775f4c9992cd06902cb2dcb8e76
-
 	omp_set_num_threads(16);
-	
+
 	for (unsigned long int it = 0; it < ITERATIONS; it++) {
 		#pragma omp parallel for
 		for (int h = 0; h < HEIGHT; h++){
 		  	for (int w = 0; w < WIDTH; w++){
-<<<<<<< HEAD
 	    		stencilKernel(input,output, mask, arg, h, w);
-=======
-	    		stencilKernel(inputTmp,outputTmp, mask, arg, h, w);
->>>>>>> b9433c934dac6775f4c9992cd06902cb2dcb8e76
 			}
 		}
 	}
