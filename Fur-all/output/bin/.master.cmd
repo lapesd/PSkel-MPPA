@@ -1,1 +1,0 @@
-cmd_output/bin/master := /usr/local/k1tools/bin/k1-g++ -o output/bin/master   output/build/master_build/master.cpp.o output/build/master_build/include/interface_mppa.cpp.o   -mcluster=ioddr -L/home/podesta/Fur-all/output/lib/io/  -lmppaipc -lmppaipc   -march=k1b -mboard=developer -mos=rtems 

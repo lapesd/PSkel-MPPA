@@ -1,0 +1,20 @@
+CONFLICT (content): Merge conflict in Fur-abstraction/include/PSkelStencil.hpp
+Auto-merging Fur-abstraction/include/PSkelStencil.h
+CONFLICT (content): Merge conflict in Fur-abstraction/include/PSkelStencil.h
+Auto-merging Fur-abstraction/include/PSkelMask.hpp
+CONFLICT (content): Merge conflict in Fur-abstraction/include/PSkelMask.hpp
+Auto-merging Fur-abstraction/include/PSkelMask.h
+CONFLICT (content): Merge conflict in Fur-abstraction/include/PSkelMask.h
+Auto-merging Fur-abstraction/include/PSkelDefs.h
+CONFLICT (content): Merge conflict in Fur-abstraction/include/PSkelDefs.h
+Auto-merging Fur-abstraction/include/PSkelArray.hpp
+CONFLICT (content): Merge conflict in Fur-abstraction/include/PSkelArray.hpp
+Auto-merging Fur-abstraction/include/PSkelArray.h
+CONFLICT (content): Merge conflict in Fur-abstraction/include/PSkelArray.h
+Auto-merging Fur-abstraction/include/PSkelArgs.hpp
+CONFLICT (content): Merge conflict in Fur-abstraction/include/PSkelArgs.hpp
+Auto-merging Fur-abstraction/include/PSkel.h
+CONFLICT (content): Merge conflict in Fur-abstraction/include/PSkel.h
+Auto-merging Fur-abstraction/AbstractionTest.sh
+CONFLICT (add/add): Merge conflict in Fur-abstraction/AbstractionTest.sh
+Automatic merge failed; fix conflicts and then commit the result.

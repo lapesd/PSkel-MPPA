@@ -1,1 +1,0 @@
-cmd_output/bin/slave := /usr/local/k1tools/bin/k1-g++ -o output/bin/slave   output/build/slave_build/slave.cpp.o output/build/slave_build/interface_mppa.cpp.o   -mcluster=node -L/home/podesta/Fur-abstraction/output/lib/cluster/  -lmppaipc -lmppaipc  -march=k1b -mboard=developer -mos=nodeos -fopenmp
